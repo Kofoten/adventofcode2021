@@ -22,11 +22,10 @@ fn part1() {
 
 fn part2() {
     let input = read_input("./input.txt");
-    let input_len = input.len();
-    let mut sums: Vec<i32> = vec![0; input_len];
+    let mut sums: Vec<i32> = vec![0; input.len()];
     let mut counter: i32 = 0;
 
-    for i in 0..input_len {
+    for i in 0..input.len() {
         let inner_start = if i < 2 { 0 } else { i - 2 };
         for j in inner_start..i + 1 {
             sums[j] += input[i];
