@@ -1,6 +1,6 @@
-use crate::challange01::input;
+use crate::challange01::input::ChallangeInput01;
 
-pub fn run(input: input::ChallangeInput01) -> String {
+pub fn run(input: ChallangeInput01) -> String {
     let mut sums: Vec<u32> = vec![0; input.values.len()];
     let mut counter: u32 = 0;
 

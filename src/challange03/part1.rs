@@ -1,6 +1,6 @@
-use crate::challange03::input;
+use crate::challange03::input::ChallangeInput03;
 
-pub fn run(input: input::ChallangeInput03) -> String {
+pub fn run(input: ChallangeInput03) -> String {
     let threshold = (input.values.len() / 2) as u32;
     let mut counters: Vec<u32> = vec![0; input.bit_count];
 

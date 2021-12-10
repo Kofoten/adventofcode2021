@@ -1,6 +1,6 @@
-use crate::challange04::input;
+use crate::challange04::input::ChallangeInput04;
 
-pub fn run(input: input::ChallangeInput04) -> String {
+pub fn run(input: ChallangeInput04) -> String {
     let mut answer: i32 = -1;
     let mut boards = input.boards.clone();
 

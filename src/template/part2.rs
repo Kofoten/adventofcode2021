@@ -1,5 +1,5 @@
-use crate::template::input;
+use crate::template::input::ChallangeInputTemplate;
 
-pub fn run(input: input::ChallangeInputTemplate) -> String {
+pub fn run(input: ChallangeInputTemplate) -> String {
     input.text
 }

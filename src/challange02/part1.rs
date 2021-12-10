@@ -1,6 +1,6 @@
-use crate::challange02::input;
+use crate::challange02::input::ChallangeInput02;
 
-pub fn run(input: input::ChallangeInput02) -> String {
+pub fn run(input: ChallangeInput02) -> String {
     let mut horizontal: u32 = 0;
     let mut depth: u32 = 0;
     for command in input.commands {
