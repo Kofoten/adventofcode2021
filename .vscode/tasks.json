@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cargo",
+			"subcommand": "build --manifest-path ./day1/Cargo.toml -q",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "buildAll"
+		}
+	]
+}
