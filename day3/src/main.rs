@@ -13,7 +13,7 @@ fn part1() {
 
     for bits in input {
         for i in 0..12 {
-            if bits[i] == 1 {
+            if bits[i] == true {
                 counters[i] += 1
             }
         }
@@ -31,20 +31,20 @@ fn part1() {
         let ones_is_common = counters[i] > threshold;
         gamma_rate += (ones_is_common as i32) << i;
         epsilon_rate += (!ones_is_common as i32) << i;
-        println!("{}\t{}\t{}\t{}\t{}\t{}", counters[i],  !ones_is_common, ones_is_common, 1 << i, gamma_rate, epsilon_rate);
+        println!("{}\t{}\t{}\t{}\t{}\t{}", counters[i], !ones_is_common, ones_is_common, 1 << i, gamma_rate, epsilon_rate);
     }
 
     println!("Answer part 1: {}", gamma_rate * epsilon_rate);
 }
 
-fn read_input<P>(filename: P) -> Vec<Vec<u8>> where P: AsRef<Path> + std::fmt::Display + Copy {
-    let mut parsed_input: Vec<Vec<u8>> = Vec::new();
+fn read_input<P>(filename: P) -> Vec<Vec<bool>> where P: AsRef<Path> + std::fmt::Display + Copy {
+    let mut parsed_input: Vec<Vec<bool>> = Vec::new();
     if let Ok(lines) = read_lines(filename) {
         for line_stream in lines {
             if let Ok(line) = line_stream {
-                let mut bits: Vec<u8> = Vec::new();
+                let mut bits: Vec<bool> = Vec::new();
                 for byte in line.as_bytes() {
-                    bits.push(*byte - 48)
+                    bits.push(*byte - 48 > 0)
                 }
                 parsed_input.push(bits);
             } else {
