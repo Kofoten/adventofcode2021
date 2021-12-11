@@ -14,7 +14,10 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            // "preLaunchTask": "cargo build: aoc"
+            "preLaunchTask": {
+                "task": "${defaultBuildTask}",
+                "type": "cargo"
+            }
         }
     ]
 }
