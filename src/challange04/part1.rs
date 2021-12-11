@@ -1,13 +1,12 @@
 use crate::challange04::input::ChallangeInput04;
 
-pub fn run(input: ChallangeInput04) -> String {
+pub fn run(mut input: ChallangeInput04) -> String {
     let mut answer: i32 = -1;
-    let mut boards = input.boards.clone();
 
     for draw in input.draws {
-        for i in 0..boards.len() {
-            if boards[i].check_number(draw) {
-                answer = (boards[i].get_unmarked_sum() * draw) as i32;
+        for i in 0..input.boards.len() {
+            if input.boards[i].check_number(draw) {
+                answer = (input.boards[i].get_unmarked_sum() * draw) as i32;
                 break;
             }
         }

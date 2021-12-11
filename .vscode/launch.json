@@ -9,7 +9,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/aoc2021.exe",
-            "args": [ "6", "2" ],
+            "args": [ "7", "2" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
