@@ -9,14 +9,16 @@ mod challange01;
 mod challange02;
 mod challange03;
 mod challange04;
+mod challange05;
 
-fn exec(day: u32, part: u32, filename: String) -> Result<String, Error> {
+fn exec(day: u32, part: u32, filename: &str) -> Result<String, Error> {
     let challange: Box<dyn Challange> = match day {
         0 => Box::new(template::ChallangeTemplate {}),
         1 => Box::new(challange01::Challange01 {}),
         2 => Box::new(challange02::Challange02 {}),
         3 => Box::new(challange03::Challange03 {}),
         4 => Box::new(challange04::Challange04 {}),
+        5 => Box::new(challange05::Challange05 {}),
         _ => return Err(Error::new(ErrorKind::Other, "Invalid day")),
     };
 
@@ -36,7 +38,7 @@ fn main() -> std::io::Result<()> {
 
     let day = matches.value_of_t::<u32>("day").unwrap();
     let part = matches.value_of_t::<u32>("part").unwrap();
-    let filename = matches.value_of_t::<String>("filename").unwrap();
+    let filename = matches.value_of("filename").unwrap();
 
     match exec(day, part, filename) {
         Ok(result) => {

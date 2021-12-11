@@ -3,13 +3,13 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 pub trait Challange {
-    fn run_part_1(&self, filename: String) -> String;
-    fn run_part_2(&self, filename: String) -> String;
+    fn run_part_1(&self, filename: &str) -> String;
+    fn run_part_2(&self, filename: &str) -> String;
 }
 
 pub trait ChallangeInput: Default {
     fn parse_line(&mut self, line: String);
-    fn read(filename: String, challange_name: &str) -> Self {
+    fn read(filename: &str, challange_name: &str) -> Self {
         let mut input: Self = Self::default();
         let path = get_path(filename, challange_name);
         if let Ok(lines) = read_lines(path.clone()) {
@@ -32,10 +32,10 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>> wher
     Ok(io::BufReader::new(file).lines())
 }
 
-fn get_path(filename: String, challange_name: &str) -> String {
+fn get_path(filename: &str, challange_name: &str) -> String {
     if filename.is_empty() {
         format!("./input/{}.txt", challange_name).to_string()
     } else {
-        filename
+        filename.to_string()
     }
 }

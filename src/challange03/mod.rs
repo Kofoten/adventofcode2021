@@ -9,11 +9,11 @@ const NAME: &str = "challange03";
 pub struct Challange03 {}
 
 impl Challange for Challange03 {
-    fn run_part_1(&self, filename: String) -> String {
+    fn run_part_1(&self, filename: &str) -> String {
         part1::run(input::ChallangeInput03::read(filename, NAME))
     }
 
-    fn run_part_2(&self, filename: String) -> String {
+    fn run_part_2(&self, filename: &str) -> String {
         part2::run(input::ChallangeInput03::read(filename, NAME))
     }
 }
