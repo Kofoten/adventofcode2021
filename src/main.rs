@@ -1,6 +1,6 @@
 use clap::{App, Arg, ArgMatches};
-use std::io::{Error, ErrorKind};
 use core_challange::Challange;
+use std::io::{Error, ErrorKind};
 
 mod core_challange;
 mod template;
@@ -15,6 +15,7 @@ mod challange07;
 mod challange08;
 mod challange09;
 mod challange10;
+mod challange11;
 
 fn exec(day: u32, part: u32, filename: &str) -> Result<String, Error> {
     let challange: Box<dyn Challange> = match day {
@@ -29,6 +30,7 @@ fn exec(day: u32, part: u32, filename: &str) -> Result<String, Error> {
         8 => Box::new(challange08::Challange08 {}),
         9 => Box::new(challange09::Challange09 {}),
         10 => Box::new(challange10::Challange10 {}),
+        11 => Box::new(challange11::Challange11 {}),
         _ => return Err(Error::new(ErrorKind::Other, "Invalid day")),
     };
 
@@ -54,8 +56,7 @@ fn main() -> std::io::Result<()> {
         Ok(result) => {
             println!("{}", &result);
             Ok(())
-        },
+        }
         Err(error) => Err(error),
     }
 }
-
