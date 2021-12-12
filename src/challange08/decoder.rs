@@ -7,16 +7,16 @@ pub struct Decoder {
 
 impl Decoder {
     pub fn new(one: String, four: String, seven: String, eight: String) -> Self {
-        let right: Vec<char> = one.chars().collect();
-        let center_left: Vec<char> = four.chars().filter(|c| !right.contains(c)).collect();
+        let right: Vec<char> = one.chars().collect::<Vec<char>>();
+        let center_left: Vec<char> = four.chars().filter(|c| !right.contains(c)).collect::<Vec<char>>();
         let top: char = seven.chars().filter(|c| !right.contains(c)).last().unwrap();
-        let bottm_left: Vec<char> = eight.chars().filter(|c| !right.contains(c) && !center_left.contains(c) && top != *c).collect();
+        let bottm_left: Vec<char> = eight.chars().filter(|c| !right.contains(c) && !center_left.contains(c) && top != *c).collect::<Vec<char>>();
 
         Decoder { top, center_left, right, bottm_left }
     }
 
     pub fn decode(&self, value: &String) -> u32 {
-        let chars: Vec<char> = value.chars().collect();
+        let chars: Vec<char> = value.chars().collect::<Vec<char>>();
         let letter_count = chars.len();
         if letter_count == 2 {
             1

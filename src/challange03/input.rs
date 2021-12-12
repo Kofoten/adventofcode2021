@@ -23,6 +23,7 @@ impl ChallangeInput for ChallangeInput03 {
 
         if self.is_first_line {
             self.bit_count = bytes.len();
+            self.is_first_line = false;
         }
 
         for byte in bytes {
