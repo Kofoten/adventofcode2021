@@ -10,7 +10,7 @@
                     "build"
                 ]
             },
-            "args": [ "11", "2" ],
+            "args": [ "12", "2" ],
             "cwd": "${workspaceFolder}",
         }
     ]
