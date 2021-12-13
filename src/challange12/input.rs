@@ -16,23 +16,20 @@ impl Default for ChallangeInput12 {
 
 impl ChallangeInput for ChallangeInput12 {
     fn parse_line(&mut self, line: String) {
-        let connected_caves: Vec<String> = line
-            .split("-")
-            .map(|cave| cave.to_string())
-            .collect::<Vec<String>>();
+        let connected_caves: Vec<&str> = line.split("-").collect::<Vec<&str>>();
 
         for i in 0..connected_caves.len() {
             let cave: &mut Cave = self
                 .caves
-                .entry(connected_caves[i].clone())
-                .or_insert(Cave::from(connected_caves[i].clone()));
+                .entry(connected_caves[i].to_string())
+                .or_insert(Cave::from(connected_caves[i]));
 
             for j in 0..connected_caves.len() {
                 if j == i {
                     continue;
                 }
 
-                cave.add_connection(connected_caves[j].clone());
+                cave.connections.push(connected_caves[j].to_string());
             }
         }
     }

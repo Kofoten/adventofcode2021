@@ -1,54 +1,62 @@
-use std::collections::HashMap;
+use std::fmt::Display;
+
+const START: &str = "start";
+const END: &str = "end";
+
+#[derive(PartialEq)]
+pub enum CaveType {
+    Start,
+    End,
+    Small,
+    Large,
+}
 
 pub struct Cave {
     pub name: String,
-    pub connections: HashMap<String, bool>,
+    pub cave_type: CaveType,
+    pub connections: Vec<String>,
 }
 
 impl Cave {
-    pub fn from(name: String) -> Self {
+    pub fn from(name: &str) -> Self {
         Cave {
-            name,
-            connections: HashMap::new(),
+            name: name.to_string(),
+            cave_type: match name {
+                "start" => CaveType::Start,
+                "end" => CaveType::End,
+                _ => {
+                    if name.chars().nth(0).unwrap().is_lowercase() {
+                        CaveType::Small
+                    } else {
+                        CaveType::Large
+                    }
+                }
+            },
+            connections: Vec::new(),
         }
-    }
-    pub fn add_connection(&mut self, name: String) {
-        let is_small: bool = name.chars().all(|c| c.is_ascii_lowercase());
-        self.connections.insert(name, is_small);
     }
 }
 
 pub struct Path {
-    pub is_complete: bool,
-    pub last_visited: String,
-    pub visits: HashMap<String, u32>,
+    pub visits: Vec<String>,
+    pub has_double_small_visit: bool,
 }
 
 impl Path {
-    pub fn from(last_visited: String) -> Self {
+    pub fn new() -> Self {
         Path {
-            visits: HashMap::from([(last_visited.clone(), 10)]),
-            is_complete: false,
-            last_visited,
+            visits: vec![START.to_string()],
+            has_double_small_visit: false,
         }
     }
 
-    pub fn visits_at(&self, name: &String) -> u32 {
-        if self.visits.contains_key(name) {
-            *self.visits.get(name).unwrap()
-        } else {
-            0
-        }
+    pub fn is_complete(&self) -> bool {
+        self.visits.last().unwrap().as_str() == END
     }
+}
 
-    pub fn clone_and_visit(&self, name: String) -> Self {
-        let mut copy = Path {
-            is_complete: self.is_complete.clone(),
-            last_visited: name.clone(),
-            visits: self.visits.clone(),
-        };
-
-        *copy.visits.entry(name).or_insert(0) += 1;
-        copy
+impl Display for Path {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.visits.join(","))
     }
 }

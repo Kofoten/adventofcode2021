@@ -1,34 +1,44 @@
-use crate::challange12::data::Cave;
+use crate::challange12::data::{Cave, CaveType, Path};
 use crate::challange12::input::ChallangeInput12;
-use std::collections::HashMap;
 
 pub fn run(input: ChallangeInput12) -> String {
-    let start_value: String = "start".to_string();
-    let end_value: String = "end".to_string();
-    let initial_path: Vec<String> = vec![start_value];
-
-    continue_paths(&initial_path, &end_value, &input.caves).to_string()
-}
-
-fn continue_paths(path: &Vec<String>, end_on: &String, caves: &HashMap<String, Cave>) -> u32 {
     let mut counter: u32 = 0;
-    let key: &String = path.last().unwrap();
-    let cave: &Cave = caves.get(key).unwrap();
+    let mut paths: Vec<Path> = vec![Path::new()];
 
-    for (name, is_small) in &cave.connections {
-        if *is_small && path.contains(&name) {
-            continue;
-        }
+    while let Some(path) = paths.pop() {
+        let cave: &Cave = input.caves.get(path.visits.last().unwrap()).unwrap();
 
-        let mut new_path: Vec<String> = path.clone();
-        new_path.push(name.clone());
+        for connection in &cave.connections {
+            let connected_cave = input.caves.get(connection).unwrap();
 
-        if *name == *end_on {
-            counter += 1;
-        } else {
-            counter += continue_paths(&new_path, end_on, caves);
+            if let Ok(new_path) = fork(&path, connected_cave) {
+                if new_path.is_complete() {
+                    counter += 1;
+                } else {
+                    paths.push(new_path);
+                }
+            }
         }
     }
 
-    counter
+    counter.to_string()
+}
+
+fn fork(path: &Path, cave: &Cave) -> Result<Path, ()> {
+    if cave.cave_type == CaveType::Start {
+        return Err(());
+    }
+
+    if cave.cave_type == CaveType::Small && path.visits.contains(&cave.name) {
+        return Err(());
+    }
+
+    let mut copy: Path = Path {
+        visits: path.visits.clone(),
+        has_double_small_visit: path.has_double_small_visit.clone(),
+    };
+
+    copy.visits.push(cave.name.clone());
+
+    Ok(copy)
 }
