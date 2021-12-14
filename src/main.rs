@@ -19,6 +19,17 @@ mod challange11;
 mod challange12;
 mod challange13;
 mod challange14;
+mod challange15;
+mod challange16;
+mod challange17;
+mod challange18;
+mod challange19;
+mod challange20;
+mod challange21;
+mod challange22;
+mod challange23;
+mod challange24;
+mod challange25;
 
 fn exec(day: u32, part: u32, filename: &str) -> Result<String, Error> {
     let challange: Box<dyn Challange> = match day {
@@ -37,6 +48,17 @@ fn exec(day: u32, part: u32, filename: &str) -> Result<String, Error> {
         12 => Box::new(challange12::Challange12 {}),
         13 => Box::new(challange13::Challange13 {}),
         14 => Box::new(challange14::Challange14 {}),
+        15 => Box::new(challange15::Challange15 {}),
+        16 => Box::new(challange16::Challange16 {}),
+        17 => Box::new(challange17::Challange17 {}),
+        18 => Box::new(challange18::Challange18 {}),
+        19 => Box::new(challange19::Challange19 {}),
+        20 => Box::new(challange20::Challange20 {}),
+        21 => Box::new(challange21::Challange21 {}),
+        22 => Box::new(challange22::Challange22 {}),
+        23 => Box::new(challange23::Challange23 {}),
+        24 => Box::new(challange24::Challange24 {}),
+        25 => Box::new(challange25::Challange25 {}),
         _ => return Err(Error::new(ErrorKind::Other, "Invalid day")),
     };
 
