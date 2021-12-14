@@ -10,7 +10,7 @@ pub fn calculate_polymer_strength(
 
     for i in 1..template.len() {
         let key = format!("{}{}", template[i - 1], template[i]);
-        combinations.entry(key).or_insert(1);
+        *combinations.entry(key).or_insert(0) += 1;
     }
 
     for _step in 0..steps {
