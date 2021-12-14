@@ -1,36 +1,54 @@
-use std::cmp;
 use std::collections::HashMap;
 
 pub fn calculate_polymer_strength(
     steps: usize,
-    template: &mut Vec<char>,
+    template: &Vec<char>,
     rules: &HashMap<String, char>,
 ) -> usize {
-    for _step in 0..steps {
-        let mut new_template: Vec<char> = vec![template[0]];
+    let last: char = *template.iter().last().unwrap();
+    let mut combinations: HashMap<String, usize> = HashMap::new();
 
-        for i in 1..template.len() {
-            let second = template[i];
-            let key = format!("{}{}", template[i - 1], second);
-            let element = rules.get(&key).unwrap();
-            new_template.push(*element);
-            new_template.push(second);
+    for i in 1..template.len() {
+        let key = format!("{}{}", template[i - 1], template[i]);
+        combinations.entry(key).or_insert(1);
+    }
+
+    for _step in 0..steps {
+        let mut new_combinations: HashMap<String, usize> = HashMap::new();
+
+        for (key, count) in &combinations {
+            if let Some(character) = rules.get(key) {
+                if let Ok(new_key) = create_new_key(key, *character, 0) {
+                    *new_combinations.entry(new_key).or_insert(0) += *count;
+                }
+
+                if let Ok(new_key) = create_new_key(key, *character, 1) {
+                    *new_combinations.entry(new_key).or_insert(0) += *count;
+                }
+            }
         }
 
-        *template = new_template;
+        combinations = new_combinations;
     }
 
-    let mut counts: HashMap<char, usize> = HashMap::new();
-    for i in 0..template.len() {
-        *counts.entry(template[i]).or_insert(0) += 1;
+    let mut counts: HashMap<char, usize> = HashMap::from([(last, 1)]);
+    for (key, count) in combinations {
+        if let Some(character) = key.chars().nth(0) {
+            *counts.entry(character).or_insert(0) += count;
+        }
     }
 
-    let mut max: usize = 0;
-    let mut min: usize = template.len();
-    for count in counts.values() {
-        max = cmp::max(max, *count);
-        min = cmp::min(min, *count);
-    }
+    counts.values().max().unwrap() - counts.values().min().unwrap()
+}
 
-    max - min
+fn create_new_key(key: &String, character: char, index: usize) -> Result<String, ()> {
+    if let Some(val) = key.chars().nth(index) {
+        Ok(if index == 0 {
+            format!("{}{}", val, character)
+        } else {
+            format!("{}{}", character, val)
+        })
+    } else {
+        Err(())
+    }
 }
