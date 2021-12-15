@@ -44,9 +44,9 @@ fn enlarge_input(input: &ChallangeInput15, multiplier: usize) -> ChallangeInput1
 }
 
 fn calculate_risk_level(node: &Node, add: u32) -> u32 {
-    let risk_level = (node.risk_level + add) % 10;
-    if risk_level == 0 {
-        1
+    let risk_level = node.risk_level + add;
+    if risk_level > 9 {
+        risk_level - 9
     } else {
         risk_level
     }

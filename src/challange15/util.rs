@@ -30,21 +30,52 @@ pub fn calculate_min_path_risk(nodes: &mut Vec<Node>, width: usize) -> Option<u3
 }
 
 pub fn get_min_risk_preceding_neighbour(nodes: &Vec<Node>, width: usize, index: usize) -> usize {
-    let up_allowed = index >= width;
-    let left_allowed = index % width > 0;
+    let mut neighbours: Vec<usize> = Vec::new();
 
-    if up_allowed && left_allowed {
-        if nodes[index - width].path_risk < nodes[index - 1].path_risk {
-            index - width
-        } else {
-            index - 1
+    let up_allowed: bool = index >= width;
+    let down_allowed: bool = index + width < length;
+    let left_allowed: bool = index % width > 0;
+    let right_allowed: bool = index % width < width - 1;
+
+    if up_allowed {
+        neighbours.push(index - width);
+
+        if left_allowed {
+            neighbours.push(index - width - 1);
         }
-    } else if up_allowed {
-        index - width
-    } else if left_allowed {
-        index - 1
-    } else {
-        0
+
+        if right_allowed {
+            neighbours.push(index - width + 1);
+        }
+    }
+
+    if down_allowed {
+        neighbours.push(index + width);
+
+        if left_allowed {
+            neighbours.push(index + width - 1);
+        }
+
+        if right_allowed {
+            neighbours.push(index + width + 1);
+        }
+    }
+
+    if left_allowed {
+        neighbours.push(index - 1);
+    }
+
+    if right_allowed {
+        neighbours.push(index + 1);
+    }
+
+    for i in neighbours {
+        let new_risk = nodes[index].path_risk + nodes[i].risk_level;
+        if new_risk < nodes[i].path_risk {
+            nodes[i].path_risk = new_risk;
+            nodes[i].previous = index;
+            next.push(i)
+        }
     }
 }
 
@@ -85,4 +116,51 @@ fn print_path(nodes: &Vec<Node>, width: usize) {
     }
 
     println!();
+}
+
+pub fn calculate_min_path_risk_old(nodes: &mut Vec<Node>, width: usize) -> Option<u32> {
+    let mut next: Vec<usize> = vec![0];
+
+    while let Some(index) = next.pop() {
+        let neighbours = get_neighbours(nodes.len(), width, index);
+
+        for i in neighbours {
+            let new_risk = nodes[index].path_risk + nodes[i].risk_level;
+            if new_risk < nodes[i].path_risk {
+                nodes[i].path_risk = new_risk;
+                nodes[i].previous = index;
+                next.push(i)
+            }
+        }
+    }
+
+    print_path(nodes, width);
+
+    if let Some(last) = nodes.iter().last() {
+        Some(last.path_risk)
+    } else {
+        None
+    }
+}
+
+pub fn get_neighbours(length: usize, width: usize, index: usize) -> Vec<usize> {
+    let mut neighbours: Vec<usize> = Vec::new();
+
+    if index >= width {
+        neighbours.push(index - width);
+    }
+
+    if index + width < length {
+        neighbours.push(index + width);
+    }
+
+    if index % width > 0 {
+        neighbours.push(index - 1);
+    }
+
+    if index % width < width - 1 {
+        neighbours.push(index + 1);
+    }
+
+    neighbours
 }
