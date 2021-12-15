@@ -30,6 +30,10 @@ fn enlarge_input(input: &ChallangeInput15, multiplier: usize) -> ChallangeInput1
             path_risk: u32::MAX,
         };
 
+        if i == 910 {
+            println!("910")
+        }
+
         nodes.push(new_node);
     }
 
@@ -40,8 +44,8 @@ fn enlarge_input(input: &ChallangeInput15, multiplier: usize) -> ChallangeInput1
 }
 
 fn calculate_risk_level(node: &Node, add: u32) -> u32 {
-    let risk_level = (node.risk_level + add) % 10 + 1;
-    if risk_level == 10 {
+    let risk_level = (node.risk_level + add) % 10;
+    if risk_level == 0 {
         1
     } else {
         risk_level
