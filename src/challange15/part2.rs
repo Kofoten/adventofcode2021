@@ -30,10 +30,6 @@ fn enlarge_input(input: &ChallangeInput15, multiplier: usize) -> ChallangeInput1
             path_risk: u32::MAX,
         };
 
-        if i == 910 {
-            println!("910")
-        }
-
         nodes.push(new_node);
     }
 
