@@ -28,9 +28,6 @@ impl<'a> Decoder<'a> {
         let mut parse_inner_stop: usize;
 
         while state != DecoderState::End {
-            if self.bits.len() - 7 <= self.position {
-                println!("skit");
-            }
             current_bits.push(self.bits[self.position]);
 
             match state {
@@ -65,7 +62,7 @@ impl<'a> Decoder<'a> {
                 }
                 DecoderState::Length => {
                     if current_bits.len() == length_limit {
-                        packet.length = bits_to_u32(&current_bits) as usize;
+                        packet.length = bits_to_u64(&current_bits) as usize;
                         current_bits.clear();
                         state = DecoderState::Values;
                     }
@@ -78,7 +75,7 @@ impl<'a> Decoder<'a> {
                             }
                             current_bits.remove(0);
                             packet.value <<= 4;
-                            packet.value += bits_to_u32(&current_bits);
+                            packet.value += bits_to_u64(&current_bits);
                             current_bits.clear();
                         }
                     } else if packet.length_type == LengthType::BitCount {
@@ -88,6 +85,7 @@ impl<'a> Decoder<'a> {
                                 packet.inner.push(inner_packet);
                             }
                         }
+                        self.position -= 1;
                         state = DecoderState::End;
                     } else if packet.length_type == LengthType::Commands {
                         while packet.inner.len() < packet.length {
@@ -95,13 +93,11 @@ impl<'a> Decoder<'a> {
                                 packet.inner.push(inner_packet);
                             }
                         }
+                        self.position -= 1;
                         state = DecoderState::End;
                     }
                 }
-                DecoderState::End => {
-                    println!("breaking");
-                    break;
-                }
+                _ => return None,
             }
 
             self.position += 1;
@@ -115,7 +111,7 @@ impl<'a> Decoder<'a> {
             if let Ok(packet_type) = PacketType::try_from(bits_to_u8(&current_bits)) {
                 Some(packet_type)
             } else {
-                Some(PacketType::Unknown)
+                Some(PacketType::None)
             }
         } else {
             None
@@ -132,11 +128,11 @@ fn bits_to_u8(bits: &Vec<bool>) -> u8 {
     result
 }
 
-fn bits_to_u32(bits: &Vec<bool>) -> u32 {
-    let mut result: u32 = bits[0] as u32;
+fn bits_to_u64(bits: &Vec<bool>) -> u64 {
+    let mut result: u64 = bits[0] as u64;
     for i in 1..bits.len() {
         result <<= 1;
-        result += bits[i] as u32;
+        result += bits[i] as u64;
     }
     result
 }

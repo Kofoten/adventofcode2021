@@ -1,5 +1,10 @@
+use super::decoder::Decoder;
 use crate::challange16::input::ChallangeInput16;
 
 pub fn run(input: ChallangeInput16) -> String {
-    input.bits[0].to_string()
+    if let Some(packet) = Decoder::from(&input.bits).parse_packet() {
+        packet.get_result().to_string()
+    } else {
+        String::from("skit")
+    }
 }
