@@ -1,5 +1,7 @@
 use crate::core_challange::{Challange, ChallangeInput};
 
+pub mod data;
+
 mod input;
 mod part1;
 mod part2;
