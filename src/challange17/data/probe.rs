@@ -12,4 +12,17 @@ impl Probe {
             position: Point::origin(),
         }
     }
+
+    pub fn update(&mut self) {
+        self.position.x += self.velocity.x;
+        self.position.y += self.velocity.y;
+
+        if self.velocity.x > 0 {
+            self.velocity.x -= 1;
+        } else if self.velocity.x < 0 {
+            self.velocity.x += 1;
+        }
+
+        self.velocity.y -= 1;
+    }
 }

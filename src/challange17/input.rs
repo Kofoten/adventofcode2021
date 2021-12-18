@@ -1,15 +1,15 @@
 use crate::core_challange::ChallangeInput;
 
-use super::data::Area;
+use super::data::Rectangle;
 
 pub struct ChallangeInput17 {
-    pub target_area: Area,
+    pub target_area: Rectangle,
 }
 
 impl Default for ChallangeInput17 {
     fn default() -> Self {
         ChallangeInput17 {
-            target_area: Area::new(),
+            target_area: Rectangle::new(),
         }
     }
 }
